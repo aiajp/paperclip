@@ -18,6 +18,7 @@ import { initPluginBridge } from "./plugins/bridge-init";
 import { PluginLauncherProvider } from "./plugins/launchers";
 import "@mdxeditor/editor/style.css";
 import "./index.css";
+import "./i18n"; // Initialize i18n before app render
 
 initPluginBridge(React, ReactDOM);
 

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen, Moon, Settings, Sun } from "lucide-react";
+import { BookOpen, Globe, Moon, Settings, Sun } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link, Outlet, useLocation, useNavigate, useParams } from "@/lib/router";
+import { setLanguage, supportedLanguages } from "../i18n";
 import { CompanyRail } from "./CompanyRail";
 import { Sidebar } from "./Sidebar";
 import { InstanceSidebar } from "./InstanceSidebar";
@@ -58,6 +60,7 @@ export function Layout() {
     setSelectedCompanyId,
   } = useCompany();
   const { theme, toggleTheme } = useTheme();
+  const { i18n } = useTranslation();
   const { companyPrefix } = useParams<{ companyPrefix: string }>();
   const navigate = useNavigate();
   const location = useLocation();
@@ -67,6 +70,8 @@ export function Layout() {
   const [mobileNavVisible, setMobileNavVisible] = useState(true);
   const [instanceSettingsTarget, setInstanceSettingsTarget] = useState<string>(() => readRememberedInstanceSettingsPath());
   const nextTheme = theme === "dark" ? "light" : "dark";
+  const nextLang = i18n.language === "ja" ? "en" : "ja";
+  const nextLangLabel = supportedLanguages.find((l) => l.code === nextLang)?.label ?? nextLang;
   const matchedCompany = useMemo(() => {
     if (!companyPrefix) return null;
     const requestedPrefix = companyPrefix.toUpperCase();
@@ -329,6 +334,17 @@ export function Layout() {
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  className="text-muted-foreground shrink-0"
+                  onClick={() => setLanguage(nextLang)}
+                  aria-label={`Switch to ${nextLangLabel}`}
+                  title={`Switch to ${nextLangLabel}`}
+                >
+                  <Globe className="h-4 w-4" />
+                </Button>
               </div>
             </div>
           </div>
@@ -386,6 +402,17 @@ export function Layout() {
                   title={`Switch to ${nextTheme} mode`}
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  className="text-muted-foreground shrink-0"
+                  onClick={() => setLanguage(nextLang)}
+                  aria-label={`Switch to ${nextLangLabel}`}
+                  title={`Switch to ${nextLangLabel}`}
+                >
+                  <Globe className="h-4 w-4" />
                 </Button>
               </div>
             </div>
