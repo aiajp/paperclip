@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink, useLocation } from "@/lib/router";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Plus } from "lucide-react";
 import {
   DndContext,
-  PointerSensor,
+  MouseSensor,
   closestCenter,
   type DragEndEvent,
   useSensor,
@@ -117,6 +118,7 @@ function SortableProjectItem({
 
 export function SidebarProjects() {
   const [open, setOpen] = useState(true);
+  const { t } = useTranslation();
   const { selectedCompany, selectedCompanyId } = useCompany();
   const { openNewProject } = useDialog();
   const { isMobile, setSidebarOpen } = useSidebar();
@@ -153,7 +155,8 @@ export function SidebarProjects() {
   const projectMatch = location.pathname.match(/^\/(?:[^/]+\/)?projects\/([^/]+)/);
   const activeProjectRef = projectMatch?.[1] ?? null;
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    // Project reordering is intentionally desktop-only; touch should remain tap/scroll behavior.
+    useSensor(MouseSensor, {
       activationConstraint: { distance: 8 },
     }),
   );
@@ -185,7 +188,7 @@ export function SidebarProjects() {
               )}
             />
             <span className="text-[10px] font-medium uppercase tracking-widest font-mono text-muted-foreground/60">
-              Projects
+              {t("nav.projects")}
             </span>
           </CollapsibleTrigger>
           <button

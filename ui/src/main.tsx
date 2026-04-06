@@ -18,6 +18,7 @@ import { initPluginBridge } from "./plugins/bridge-init";
 import { PluginLauncherProvider } from "./plugins/launchers";
 import "@mdxeditor/editor/style.css";
 import "./index.css";
+import "./i18n"; // Initialize i18n before app render
 
 initPluginBridge(React, ReactDOM);
 
@@ -40,10 +41,10 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <CompanyProvider>
-          <ToastProvider>
-            <LiveUpdatesProvider>
-              <BrowserRouter>
+        <BrowserRouter>
+          <CompanyProvider>
+            <ToastProvider>
+              <LiveUpdatesProvider>
                 <TooltipProvider>
                   <BreadcrumbProvider>
                     <SidebarProvider>
@@ -57,10 +58,10 @@ createRoot(document.getElementById("root")!).render(
                     </SidebarProvider>
                   </BreadcrumbProvider>
                 </TooltipProvider>
-              </BrowserRouter>
-            </LiveUpdatesProvider>
-          </ToastProvider>
-        </CompanyProvider>
+              </LiveUpdatesProvider>
+            </ToastProvider>
+          </CompanyProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>
